@@ -13,3 +13,9 @@ align-items: center;
   margin-right: 1%;
   object-fit: contain;
 }
+
+/*-----------------Movie Table--------------*/
+.movieTable-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}

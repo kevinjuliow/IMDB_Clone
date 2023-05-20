@@ -1,9 +1,14 @@
-import React from 'react'
-import { useMediaQuery } from 'react-responsive';
-import { useState , useEffect } from 'react';
+import React, { useEffect , useState} from 'react'
 import axios from 'axios';
-import {MovieRecommendation2RightContainer} from './MovieRecommendation2RightContainer'
-import {MovieRecommendation2LeftContainer} from './MovieRecommendation2LeftContainer'
+import { useMediaQuery } from 'react-responsive';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { MovieSlider2 } from './MovieSlider2';
+import SwiperCore, { Navigation , Pagination, A11y} from 'swiper';
+import 'swiper/swiper.min.css';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 export const MovieRecommendation2 = () => {
   const [movies, setMovies] = useState({});
@@ -11,12 +16,11 @@ export const MovieRecommendation2 = () => {
   const isTabletorMobile = useMediaQuery({query: '(max-width: 1024px)'})
   const isMobile = useMediaQuery({query: '(max-width: 724px)'})
 
-
   const onSearch = async () =>{
     const options = {
       method: 'GET',
       url: 'https://imdb8.p.rapidapi.com/auto-complete',
-      params: {q: 'Spiderman'},
+      params: {q: 'Avengers'},
       headers: {
         'content-type': 'application/octet-stream',
         'X-RapidAPI-Key': 'c1d3d5401dmshada64a455451ddcp1e71fejsn5aa822de3477',
@@ -37,21 +41,29 @@ export const MovieRecommendation2 = () => {
  useEffect(() => {
   onSearch();
  },[])
+  
   return (
-    
-    <div>
-      {isLoaded && 
-      <div>
-        {movies.map((e)=>{
-          return (
-            <div className='mainContainer' data = {e}> 
-              <MovieRecommendation2LeftContainer/>
-              <MovieRecommendation2RightContainer/>
-            </div>
-          )
-        })}
+    <div style={{color:'var(--imdbColor)' , margin:`${isTabletorMobile? '40px 0 ' : '80px 10%'}`}}>
+      <h1>Marvel Avengers</h1>
+      <div> 
+        <Swiper
+          slidesPerView={isMobile ? 3.3 : isTabletorMobile? 3.3 : 4.3}
+          navigation={true}
+          pagination={{ clickable: true }}
+          rewind={true}
+          modules={[Navigation]}
+          spaceBetween={20}
+          >
+        {isLoaded && movies.map((e)=>{
+        return (
+          <SwiperSlide>
+            <MovieSlider2 data={e}/>
+          </SwiperSlide>
+        )
+      })}
+        </Swiper>
+      
       </div>
-      }
     </div>
   )
 }
